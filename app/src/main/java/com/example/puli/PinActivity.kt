@@ -30,7 +30,8 @@ class PinActivity : AppCompatActivity() {
                 val pin = s?.toString() ?: ""
                 if (pin.length == 4) {
                     if (pin == APP_PIN) {
-                        startActivity(Intent(this@PinActivity, MainActivity::class.java))
+                        startActivity(Intent(this@PinActivity, HomeActivity::class.java))
+                        
                         finish()
                     } else {
                         Toast.makeText(this@PinActivity, "Invalid PIN", Toast.LENGTH_SHORT).show()
