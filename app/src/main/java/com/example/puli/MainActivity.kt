@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setupDatePickers()
 
         binding.btnCalculate.setOnClickListener {
-            calculateInterest()
+            validateAndCalculate()
         }
     }
 
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         // Principal: max 7 digits, integers only
         binding.edtAmount.filters = arrayOf(android.text.InputFilter.LengthFilter(7))
 
-        // ROI: max 2 before decimal, 2 after
+        // ROI: max 2 digits before decimal, max 2 after
         binding.edtRate.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     corrected = before + "." + after.take(2)
                 }
 
-                // Prevent leading zeros like "00.5"
+                // Prevent leading zeros like "00.5" → becomes "0.5"
                 if (before.length > 1 && before.startsWith("0")) {
                     corrected = before.drop(1)
                     if (after.isNotEmpty()) corrected += "." + after.take(2)
@@ -70,43 +70,60 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupDatePickers() {
         binding.edtDate1.setOnClickListener {
-            showDatePicker { date -> 
-                binding.edtDate1.setText(dateFormat.format(date)) 
+            showDatePicker { date ->
+                binding.edtDate1.setText(dateFormat.format(date))
             }
         }
         binding.edtDate2.setOnClickListener {
-            showDatePicker { date -> 
-                binding.edtDate2.setText(dateFormat.format(date)) 
+            showDatePicker { date ->
+                binding.edtDate2.setText(dateFormat.format(date))
             }
         }
     }
 
-    private fun calculateInterest() {
+    private fun validateAndCalculate() {
         val amountStr = binding.edtAmount.text.toString().trim()
         val rateStr = binding.edtRate.text.toString().trim()
+        val date1Str = binding.edtDate1.text.toString().trim()
+        val date2Str = binding.edtDate2.text.toString().trim()
 
-        if (amountStr.isEmpty() || rateStr.isEmpty()) {
-            binding.txtResult.text = "⚠️ Enter amount and rate"
+        // Validate all inputs
+        if (amountStr.isEmpty()) {
+            binding.txtResult.text = "⚠️ Enter Principal Amount"
+            return
+        }
+        if (rateStr.isEmpty()) {
+            binding.txtResult.text = "⚠️ Enter Rate"
+            return
+        }
+        if (date1Str.isEmpty()) {
+            binding.txtResult.text = "⚠️ Select Start Date"
+            return
+        }
+        if (date2Str.isEmpty()) {
+            binding.txtResult.text = "⚠️ Select End Date"
             return
         }
 
-        val amount = amountStr.toDoubleOrNull()
-        val roi = rateStr.toDoubleOrNull()
+        // Hide keyboard only when all inputs are valid
+        hideKeyboard()
 
-        if (amount == null || amount <= 0) {
+        // Parse values
+        val amount = amountStr.toDoubleOrNull() ?: run {
+            binding.txtResult.text = "⚠️ Invalid amount"
+            return
+        }
+        val roi = rateStr.toDoubleOrNull() ?: run {
+            binding.txtResult.text = "⚠️ Invalid rate"
+            return
+        }
+
+        if (amount <= 0) {
             binding.txtResult.text = "⚠️ Amount must be > 0"
             return
         }
-        if (roi == null || roi < 0) {
+        if (roi < 0) {
             binding.txtResult.text = "⚠️ Rate cannot be negative"
-            return
-        }
-
-        val date1Str = binding.edtDate1.text.toString()
-        val date2Str = binding.edtDate2.text.toString()
-
-        if (date1Str.isEmpty() || date2Str.isEmpty()) {
-            binding.txtResult.text = "⚠️ Select both dates"
             return
         }
 
@@ -125,11 +142,10 @@ class MainActivity : AppCompatActivity() {
 
         // ✅ INCLUSIVE: +1 day
         val daysBetween = (date2.time - date1.time) / (24 * 60 * 60 * 1000) + 1
-
         val interest = (amount * roi * daysBetween) / (100 * 30)
         val total = amount + interest
 
-        // Format with Indian comma style
+        // Format as whole numbers with Indian commas (e.g., 1,50,000)
         binding.txtPrincipal.text = "₹${formatIndianNumber(amount)}"
         binding.txtInterest.text = "₹${formatIndianNumber(interest)}"
         binding.txtTotal.text = "₹${formatIndianNumber(total)}"
@@ -164,14 +180,21 @@ class MainActivity : AppCompatActivity() {
         ).show()
     }
 
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        imm.hideSoftInputFromWindow(binding.btnCalculate.windowToken, 0)
+    }
+
     private fun formatIndianNumber(value: Double): String {
+        // Round to nearest whole number
+        val whole = Math.round(value).toLong()
         return try {
-            // Use ICU for proper Indian number formatting (API 24+)
-            val formatter = android.icu.text.DecimalFormat("#,##,##0.00")
-            formatter.format(value)
+            // Indian number formatting: 1,50,000
+            val formatter = android.icu.text.DecimalFormat("#,##,##0")
+            formatter.format(whole)
         } catch (e: Throwable) {
-            // Fallback for older devices
-            String.format("%.2f", value)
+            // Fallback for older Android versions
+            String.format("%,d", whole)
         }
     }
 }
