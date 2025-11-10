@@ -22,7 +22,7 @@
             android:textColor="#1A73E8"
             android:layout_marginBottom="24dp" />
 
-        <!-- Principal Amount -->
+        <!-- Principal Input -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Start Date -->
+        <!-- Start Date Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDate1"
             android:layout_width="match_parent"
@@ -80,7 +80,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp" />
 
-        <!-- End Date -->
+        <!-- End Date Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDate2"
             android:layout_width="match_parent"
@@ -148,7 +148,26 @@
             android:text="Total Amount (P + I): ₹0.00"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#1A73E8" />
+            android:textColor="#1A73E8"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/txtDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Duration: 0 years, 0 months, 0 days"
+            android:textSize="14sp"
+            android:textColor="#5F6368"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/txtResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="#34A853"
+            android:gravity="center" />
 
     </LinearLayout>
 </ScrollView>
