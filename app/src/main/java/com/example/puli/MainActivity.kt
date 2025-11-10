@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.puli.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.*
-
+ 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
