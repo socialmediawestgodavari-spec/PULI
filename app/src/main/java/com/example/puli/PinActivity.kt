@@ -2,7 +2,8 @@ package com.example.puli
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 class PinActivity : AppCompatActivity() {
 
     private lateinit var edtPin: EditText
-    private lateinit var btnSubmit: Button
 
-    // ✅ Move const inside companion object
     companion object {
         private const val APP_PIN = "1964"
     }
@@ -22,17 +21,23 @@ class PinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_pin)
 
         edtPin = findViewById(R.id.edtPin)
-        btnSubmit = findViewById(R.id.btnSubmit)
 
-        btnSubmit.setOnClickListener {
-            val enteredPin = edtPin.text.toString()
-            if (enteredPin == APP_PIN) {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            } else {
-                Toast.makeText(this, "Invalid PIN", Toast.LENGTH_SHORT).show()
-                edtPin.setText("")
+        // Auto-validate when 4 digits are entered
+        edtPin.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val pin = s?.toString() ?: ""
+                if (pin.length == 4) {
+                    if (pin == APP_PIN) {
+                        startActivity(Intent(this@PinActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Toast.makeText(this@PinActivity, "Invalid PIN", Toast.LENGTH_SHORT).show()
+                        edtPin.setText("")
+                    }
+                }
             }
-        }
+        })
     }
 }
