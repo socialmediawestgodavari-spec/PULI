@@ -3,45 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:padding="24dp"
+    android:paddingTop="32dp"    <!-- ✅ Reduced top padding -->
+    android:gravity="top"
     android:background="#F8F9FA">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PULI"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#1A73E8"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="32dp" />
 
     <Button
         android:id="@+id/btnCredit"
-        android:layout_width="240dp"
-        android:layout_height="60dp"
+        android:layout_width="220dp"
+        android:layout_height="54dp"
         android:text="Credit"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:backgroundTint="#34A853"
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnDebit"
-        android:layout_width="240dp"
-        android:layout_height="60dp"
+        android:layout_width="220dp"
+        android:layout_height="54dp"
         android:text="Debit"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:backgroundTint="#EA4335"
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/btnCalculate"
-        android:layout_width="240dp"
-        android:layout_height="60dp"
+        android:layout_width="220dp"
+        android:layout_height="54dp"
         android:text="Calculate Interest"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:backgroundTint="#1A73E8"
         android:textColor="#FFFFFF" />
 
