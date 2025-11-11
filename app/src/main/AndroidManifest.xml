@@ -3,6 +3,7 @@
     package="com.example.puli">
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@android:drawable/ic_menu_agenda"
         android:label="PULI"
