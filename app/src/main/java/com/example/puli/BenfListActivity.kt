@@ -20,7 +20,7 @@ class BenfListActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // ✅ Google Drive Direct Download URL (raw XML)
-        val xmlUrl = "https://drive.google.com/uc?export=download&id=1zfNXAWzqTUFUSDTeEDiJic7bkh6CnOG7"
+        val xmlUrl = "https://raw.githubusercontent.com/socialmediawestgodavari-spec/puli-data/refs/heads/main/CreditsDetails.xml"
         fetchAndParseXml(xmlUrl) { list ->
             recyclerView.adapter = BenfAdapter(this, list)
         }
