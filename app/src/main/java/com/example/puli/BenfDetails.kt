@@ -3,6 +3,7 @@ package com.example.puli
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
+
 @Parcelize
 data class BenfDetails(
     var rid: Int,
@@ -10,5 +11,5 @@ data class BenfDetails(
     var amount: Long,
     var date: String,
     var iRate: String,
-    var remarks: String = "" // Default to empty (ignored during parse)
+    var remarks: String  // ← must be present
 ) : Parcelable
