@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
-    android:paddingTop="32dp"    <!-- ✅ Reduced top padding -->
+    android:paddingTop="32dp"    
     android:gravity="top"
     android:background="#F8F9FA">
 
