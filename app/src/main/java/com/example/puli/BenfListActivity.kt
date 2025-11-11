@@ -36,6 +36,7 @@ class BenfListActivity : AppCompatActivity() {
 
                     if (responseCode == 200) {
                         val factory = XmlPullParserFactory.newInstance()
+                        factory.isNamespaceAware = true
                         val parser = factory.newPullParser()
                         parser.setInput(inputStream, null)
 
@@ -46,9 +47,11 @@ class BenfListActivity : AppCompatActivity() {
                         var eventType = parser.eventType
                         while (eventType != XmlPullParser.END_DOCUMENT) {
                             when (eventType) {
+                               
                                 XmlPullParser.START_TAG -> {
-                                    tagName = parser.name
-                                    if (tagName == "BenfDetails") {
+                                    val localName = parser.name // This gives "BenfDetails", even with namespace
+                                    tagName = localName
+                                    if (localName == "BenfDetails") {
                                         current = BenfDetails(0, "", 0, "", "", "")
                                     }
                                 }
