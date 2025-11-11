@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="32dp"
-    android:gravity="center"
+    android:padding="24dp"
+    android:paddingTop="32dp"    <!-- ✅ Reduced from 80dp → 32dp -->
+    android:gravity="top"
     android:background="#F8F9FA">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PULI"
-        android:textSize="28sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#1A73E8"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="24dp" />
 
     <EditText
         android:id="@+id/edtPin"
@@ -24,7 +25,7 @@
         android:inputType="numberPassword"
         android:maxLength="4"
         android:gravity="center"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:background="@drawable/rounded_edittext"
         android:padding="12dp" />
 
