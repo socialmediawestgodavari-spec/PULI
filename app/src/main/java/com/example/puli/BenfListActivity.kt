@@ -19,8 +19,9 @@ class BenfListActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // 🔁 REPLACE WITH YOUR ACTUAL XML URL
-        fetchAndParseXml("https://drive.google.com/file/d/1zfNXAWzqTUFUSDTeEDiJic7bkh6CnOG7/view?pli=1") { list ->
+        // ✅ Google Drive Direct Download URL (raw XML)
+        val xmlUrl = "https://drive.google.com/uc?export=download&id=1zfNXAWzqTUFUSDTeEDiJic7bkh6CnOG7"
+        fetchAndParseXml(xmlUrl) { list ->
             recyclerView.adapter = BenfAdapter(this, list)
         }
     }
@@ -62,7 +63,7 @@ class BenfListActivity : AppCompatActivity() {
                                             "amount" -> current.amount = text.toLong()
                                             "date" -> current.date = text
                                             "IRate" -> current.iRate = text
-                                            // ✅ REMARKS IS SKIPPED — NO PARSING
+                                            // ✅ SKIPPING "Remarks" to avoid unescaped &/< issues
                                         }
                                     }
                                 }
@@ -87,7 +88,7 @@ class BenfListActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: Exception) {
-                showError("Load failed: ${e.message}")
+                showError("Load failed: ${e.message ?: "Unknown error"}")
             }
         }.start()
     }
