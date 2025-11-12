@@ -8,13 +8,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DEBIT LIST"  
-        android:textSize="22sp"
+        android:text="Debit List"  
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#1A73E8"
-        android:paddingStart="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:textColor="#1ae8ce"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:background="#F8F9FA" />
 
     <androidx.recyclerview.widget.RecyclerView
