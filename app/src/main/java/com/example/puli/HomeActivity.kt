@@ -16,7 +16,8 @@ class HomeActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnDebit).setOnClickListener {
-            // TODO: Add Debit logic later
+               startActivity(Intent(this, DebitListActivity::class.java))
+
         }
 
         findViewById<Button>(R.id.btnCalculate).setOnClickListener {
