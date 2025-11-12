@@ -20,8 +20,8 @@ class DebitListActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // 🔁 REPLACE WITH YOUR DEBIT XML URL
-        val debitXmlUrl = "https://raw.githubusercontent.com/your-username/debit-data/main/debits.xml"
+      
+        val debitXmlUrl = "https://raw.githubusercontent.com/socialmediawestgodavari-spec/puli-data/refs/heads/main/DebitsDetails.xml"
         fetchAndParseXml(debitXmlUrl) { list ->
             recyclerView.adapter = BenfAdapter(this, list)
         }
