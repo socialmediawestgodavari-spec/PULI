@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- App Title --> 
+    <!-- App Title -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,14 +26,14 @@
         android:orientation="horizontal"
         android:background="#FFFFFF">
 
-        <!-- Credit Tile -->
+        <!-- Credit Tile (Green) -->
         <LinearLayout
             android:id="@+id/tileCredit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="#E8F0FE"
+            android:background="#E6F4EA"
             android:gravity="center"
             android:padding="16dp">
 
@@ -43,7 +43,7 @@
                 android:text="Credit"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#1A73E8"
+                android:textColor="#34A853"
                 android:gravity="center" />
 
             <TextView
@@ -57,14 +57,14 @@
 
         </LinearLayout>
 
-        <!-- Debit Tile -->
+        <!-- Debit Tile (Red) -->
         <LinearLayout
             android:id="@+id/tileDebit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:background="#E6F4EA"
+            android:background="#FEEBEA"
             android:gravity="center"
             android:padding="16dp">
 
@@ -74,7 +74,7 @@
                 android:text="Debit"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#34A853"
+                android:textColor="#EA4335"
                 android:gravity="center" />
 
             <TextView
@@ -90,14 +90,14 @@
 
     </LinearLayout>
 
-    <!-- Row 2: Calculate (Full-width Rectangle) -->
+    <!-- Row 2: Calculate (Full-width, Blue) -->
     <LinearLayout
         android:id="@+id/tileCalculate"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="#FFF8E1"
+        android:background="#E8F0FE"
         android:gravity="center"
         android:padding="16dp">
 
@@ -107,7 +107,7 @@
             android:text="Calculate Interest"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#FF9800"
+            android:textColor="#1A73E8"
             android:gravity="center" />
 
         <TextView
