@@ -23,6 +23,7 @@
 <activity android:name=".MainActivity" />
         <activity android:name=".BenfListActivity" />
 <activity android:name=".BenfDetailActivity" />
+        <activity android:name=".DebitListActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
