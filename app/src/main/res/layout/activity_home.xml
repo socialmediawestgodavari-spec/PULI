@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PULI"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold"
             android:textColor="#1A73E8"
             android:layout_marginBottom="48dp" />
@@ -32,6 +32,7 @@
             android:paddingStart="24dp"
             android:paddingEnd="24dp">
 
+            <!-- Credit Button with Icon -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCredit"
                 android:layout_width="0dp"
@@ -42,6 +43,9 @@
                 android:textColor="#FFFFFF"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:drawableStart="@android:drawable/ic_menu_card"
+                android:drawableTint="#FFFFFF"
+                android:drawablePadding="8dp"
                 app:cornerRadius="16dp"
                 app:backgroundTint="#34A853"
                 style="@style/Widget.Material3.Button" />
@@ -50,6 +54,7 @@
                 android:layout_width="16dp"
                 android:layout_height="match_parent" />
 
+            <!-- Debit Button with Icon -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDebit"
                 android:layout_width="0dp"
@@ -60,22 +65,28 @@
                 android:textColor="#FFFFFF"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:drawableStart="@android:drawable/ic_menu_send"
+                android:drawableTint="#FFFFFF"
+                android:drawablePadding="8dp"
                 app:cornerRadius="16dp"
                 app:backgroundTint="#EA4335"
                 style="@style/Widget.Material3.Button" />
 
         </LinearLayout>
 
-        <!-- Calculate Button (Primary Action) -->
+        <!-- Calculate Button with Icon -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCalculate"
             android:layout_width="240dp"
             android:layout_height="80dp"
-            android:text="Calculate"
+            android:text="Calculate Interest"
             android:textSize="17sp"
             android:textColor="#FFFFFF"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:drawableStart="@android:drawable/ic_menu_sort_by_size"
+            android:drawableTint="#FFFFFF"
+            android:drawablePadding="10dp"
             app:cornerRadius="16dp"
             app:backgroundTint="#1A73E8"
             style="@style/Widget.Material3.Button" />
