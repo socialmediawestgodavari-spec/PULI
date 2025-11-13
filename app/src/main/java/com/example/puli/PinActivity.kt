@@ -47,64 +47,76 @@ class PinActivity : AppCompatActivity() {
     }
 
     private fun fetchAndParsePinXml(urlString: String, onSuccess: (String) -> Unit) {
-        Thread {
-            try {
-                val url = URL(urlString)
-                (url.openConnection() as HttpURLConnection).apply {
-                    requestMethod = "GET"
-                    connectTimeout = 10000
-                    readTimeout = 10000
+    Thread {
+        try {
+            val url = URL(urlString)
+            (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "GET"
+                connectTimeout = 10000
+                readTimeout = 10000
 
-                    if (responseCode == 200) {
-                        val factory = XmlPullParserFactory.newInstance()
-                        factory.isNamespaceAware = true
-                        val parser = factory.newPullParser()
-                        parser.setInput(inputStream, null)
+                if (responseCode == 200) {
+                    val factory = XmlPullParserFactory.newInstance()
+                    factory.isNamespaceAware = true
+                    val parser = factory.newPullParser()
+                    parser.setInput(inputStream, null)
 
-                        var p = ""; var u = ""; var l = ""; var i_val = ""
-                        var tagName = ""
+                    var p = ""; var u = ""; var l = ""; var i_val = ""
+                    var currentTag = ""
+                    var insideKeys = false
 
-                        var eventType = parser.eventType
-                        while (eventType != XmlPullParser.END_DOCUMENT) {
-                            when (eventType) {
-                                XmlPullParser.START_TAG -> {
-                                    tagName = parser.name
-                                    if (tagName in listOf("p", "u", "l", "i")) {
-                                        val text = parser.nextText().trim()
-                                        when (tagName) {
-                                            "p" -> p = text
-                                            "u" -> u = text
-                                            "l" -> l = text
-                                            "i" -> i_val = text
-                                        }
-                                    }
+                    var eventType = parser.eventType
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        when (eventType) {
+                            XmlPullParser.START_TAG -> {
+                                val tagName = parser.name
+                                if (tagName == "Keys") {
+                                    insideKeys = true
+                                } else if (insideKeys && listOf("p", "u", "l", "i").contains(tagName)) {
+                                    currentTag = tagName
                                 }
                             }
-                            eventType = parser.next()
+                            XmlPullParser.TEXT -> {
+                                if (insideKeys && currentTag.isNotEmpty()) {
+                                    val text = parser.text.trim()
+                                    when (currentTag) {
+                                        "p" -> p = text
+                                        "u" -> u = text
+                                        "l" -> l = text
+                                        "i" -> i_val = text
+                                    }
+                                    currentTag = ""
+                                }
+                            }
+                            XmlPullParser.END_TAG -> {
+                                if (parser.name == "Keys") {
+                                    insideKeys = false
+                                }
+                            }
                         }
+                        eventType = parser.next()
+                    }
 
-                  
-                        val pin = buildString {
-                            append(if (p.length >= 1) p[0] else '0')
-                            append(if (u.length >= 2) u[1] else '0')
-                            append(if (l.length >= 3) l[2] else '0')
-                            append(if (i_val.length >= 4) i_val[3] else '0')
-                        }
+                   
+                    val pin = buildString {
+                        append(if (p.length >= 1) p[0] else '0')
+                        append(if (u.length >= 2) u[1] else '0')
+                        append(if (l.length >= 3) l[2] else '0')
+                        append(if (i_val.length >= 4) i_val[3] else '0')
+                    }
 
-                        runOnUiThread {
-                            onSuccess(pin)
-                        }
-                    } else {
-                        runOnUiThread {
-                            Toast.makeText(this@PinActivity, "Failed to load PIN (HTTP ${responseCode})", Toast.LENGTH_LONG).show()
-                        }
+                    runOnUiThread { onSuccess(pin) }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(this@PinActivity, "HTTP ${responseCode}", Toast.LENGTH_LONG).show()
                     }
                 }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this@PinActivity, "PIN load error: ${e.message}", Toast.LENGTH_LONG).show()
-                }
             }
-        }.start()
-    }
+        } catch (e: Exception) {
+            runOnUiThread {
+                Toast.makeText(this@PinActivity, "Parse error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }.start()
+}
 }                  
