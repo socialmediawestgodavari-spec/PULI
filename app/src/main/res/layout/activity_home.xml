@@ -49,7 +49,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Amount and Interest"
+                android:text="Interest and Projection"
                 android:textSize="14sp"
                 android:textColor="#5F6368"
                 android:gravity="center"
@@ -113,7 +113,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Interest and Projection"
+            android:text="Amount and Interest"
             android:textSize="14sp"
             android:textColor="#5F6368"
             android:gravity="center"
