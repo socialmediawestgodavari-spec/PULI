@@ -1,5 +1,5 @@
-package com.example.puli
- 
+package com.example.rrpuli
+
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.Button
@@ -22,38 +22,60 @@ class BenfDetailActivity : AppCompatActivity() {
 
         val item = intent.getParcelableExtra<BenfDetails>("item")!!
 
-        // Header
-        findViewById<TextView>(R.id.txtName).text = item.name
+        // Header: Name (Blue)
+        findViewById<TextView>(R.id.txtName).apply {
+            text = item.name
+            setTextColor(0xFF1A73E8.toInt()) // Blue
+        }
 
-        // Format amount
+        // Amount: Green
         val formattedAmount = try {
             val formatter = android.icu.text.DecimalFormat("#,##,##0")
             "₹${formatter.format(item.amount)}"
         } catch (e: Throwable) {
             "₹${item.amount}"
         }
-        findViewById<TextView>(R.id.txtAmount).text = formattedAmount
-        findViewById<TextView>(R.id.txtDate).text = item.date
-        findViewById<TextView>(R.id.txtIRate).text = "${item.iRate}%"
+        findViewById<TextView>(R.id.txtAmount).apply {
+            text = formattedAmount
+            setTextColor(0xFF34A853.toInt()) // Green
+        }
 
-        // Today's date
+        // Date: Black
+        findViewById<TextView>(R.id.txtDate).apply {
+            text = item.date
+            setTextColor(0xFF202124.toInt()) // Black/dark gray
+        }
+
+        // Interest Rate: Red
+        findViewById<TextView>(R.id.txtIRate).apply {
+            text = "${item.iRate}%"
+            setTextColor(0xFFEA4335.toInt()) // Red
+        }
+
+        // Today's date for interest header
         val today = java.util.Date()
         val todayFormatted = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.US).format(today)
-        findViewById<TextView>(R.id.txtInterestHeader).text = "INTEREST TO DATE (as of $todayFormatted)"
+        findViewById<TextView>(R.id.txtInterestHeader).apply {
+            text = "INTEREST TO DATE (as of $todayFormatted)"
+            setTextColor(0xFF34A853.toInt()) // Green header
+        }
 
         // Calculate interest & duration
         val (interestValue, durationText) = calculateInterestAndDuration(item, today)
 
-        // Display interest
+        // Accrued Interest: Red
         val interestFormatted = try {
             val formatter = android.icu.text.DecimalFormat("#,##,##0")
             "₹${formatter.format(interestValue)}"
         } catch (e: Throwable) {
             "₹$interestValue"
         }
-        findViewById<TextView>(R.id.txtCalculatedInterest).text = interestFormatted
+        findViewById<TextView>(R.id.txtCalculatedInterest).apply {
+            text = interestFormatted
+            setTextColor(0xFFEA4335.toInt()) // Red
+        }
 
-        // Total = Principal + Interest
+        // Total Amount: Blue
         val totalValue = item.amount + interestValue
         val totalFormatted = try {
             val formatter = android.icu.text.DecimalFormat("#,##,##0")
@@ -61,15 +83,24 @@ class BenfDetailActivity : AppCompatActivity() {
         } catch (e: Throwable) {
             "₹$totalValue"
         }
-        findViewById<TextView>(R.id.txtTotalAmount).text = totalFormatted
+        findViewById<TextView>(R.id.txtTotalAmount).apply {
+            text = totalFormatted
+            setTextColor(0xFF1A73E8.toInt()) // Blue
+        }
 
-        // Duration
-        findViewById<TextView>(R.id.txtDuration).text = durationText
+        // Duration: Gray
+        findViewById<TextView>(R.id.txtDuration).apply {
+            text = durationText
+            setTextColor(0xFF5F6368.toInt()) // Gray
+        }
 
-        // Remarks
-        findViewById<TextView>(R.id.txtRemarks).text = item.remarks.ifEmpty { "No remarks" }
+        // Remarks: Gray
+        findViewById<TextView>(R.id.txtRemarks).apply {
+            text = item.remarks.ifEmpty { "No remarks" }
+            setTextColor(0xFF5F6368.toInt()) // Gray
+        }
 
-        // Initialize projected interest views
+        // Initialize projected views
         edtProjectedDate = findViewById(R.id.edtProjectedDate)
         btnCalculateProjected = findViewById(R.id.btnCalculateProjected)
         txtProjectedInterest = findViewById(R.id.txtProjectedInterest)
@@ -94,11 +125,11 @@ class BenfDetailActivity : AppCompatActivity() {
 
             try {
                 val sdf = java.text.SimpleDateFormat("dd-MM-yyyy", java.util.Locale.US)
-                val creditDate = sdf.parse(item.date)!!
-                val projectedDate = sdf.parse(projectedDateStr)!!
+                val creditDate = sdf.parse(item.date) ?: throw Exception("Invalid date")
+                val projectedDate = sdf.parse(projectedDateStr) ?: throw Exception("Invalid projected date")
 
                 if (projectedDate.before(creditDate)) {
-                    Toast.makeText(this, "Projected date must be after credit date", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Future date must be after start date", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -107,8 +138,19 @@ class BenfDetailActivity : AppCompatActivity() {
                 val interest = (item.amount.toDouble() * roi * days) / (100.0 * 30.0)
                 val interestRounded = if (interest.isFinite()) Math.round(interest).toLong() else 0L
 
-                val interestFormatted = formatIndianNumber(interestRounded)
-                val totalFormatted = formatIndianNumber(item.amount + interestRounded)
+                val interestFormatted = try {
+                    val formatter = android.icu.text.DecimalFormat("#,##,##0")
+                    formatter.format(interestRounded)
+                } catch (e: Throwable) {
+                    interestRounded.toString()
+                }
+
+                val totalFormatted = try {
+                    val formatter = android.icu.text.DecimalFormat("#,##,##0")
+                    formatter.format(item.amount + interestRounded)
+                } catch (e: Throwable) {
+                    (item.amount + interestRounded).toString()
+                }
 
                 val years = days / 365
                 val rem = days % 365
@@ -121,7 +163,7 @@ class BenfDetailActivity : AppCompatActivity() {
                 txtTotalProjected.text = "₹$totalFormatted"
                 txtProjectedDuration.text = durationText
 
-                // ✅ Clarity note
+                // Clarity note
                 val note = "Interest calculated from ${item.date} to $projectedDateStr"
                 findViewById<TextView>(R.id.txtProjectionNote).text = note
 
@@ -160,15 +202,6 @@ class BenfDetailActivity : AppCompatActivity() {
             Pair(interestRounded, durationText)
         } catch (e: Exception) {
             Pair(0L, "Error")
-        }
-    }
-
-    private fun formatIndianNumber(value: Long): String {
-        return try {
-            val formatter = android.icu.text.DecimalFormat("#,##,##0")
-            formatter.format(value)
-        } catch (e: Throwable) {
-            value.toString()
         }
     }
 
